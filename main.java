@@ -1,17 +1,20 @@
 import java.io.*;
 
 public class main {
-    public static void main(String[] args) throws FileNotFoundException {
-        File f=new File("C:\\Users\\JF\\Desktop\\111.txt");
-        FileReader fr=new FileReader(f);
-        String Str = "";
+    public static void main(String[] args) {
         try {
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-            while ((line = br.readLine()) != null) {
-                Str += line;
+            FileInputStream fis=new FileInputStream("C:\\Users\\JF\\Desktop\\111.txt");
+            BufferedInputStream bis=new BufferedInputStream(fis);
+            String content="";
+            //自己定义一个缓冲区
+            byte[] buffer=new byte[10240];
+            int flag=0;
+            while((flag=bis.read(buffer))!=-1){
+                content+=new String(buffer, 0, flag);
             }
-            System.out.print(Str);
+            System.out.print(content);
+            //关闭的时候只需要关闭最外层的流就行了
+            bis.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException ex) {
