@@ -1,12 +1,6 @@
 package Knightjourney;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class ioFile {
 	public String BufReader() throws FileNotFoundException {
@@ -36,6 +30,40 @@ public class ioFile {
 			bw.write(s);
 			bw.close();
 			fw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	public String BufInput() throws FileNotFoundException {
+		File f=new File("C:\\Users\\JF\\Desktop\\111.txt");
+		FileInputStream fi = new FileInputStream(f);
+		String content = "";
+		int flag;
+		try {
+			BufferedInputStream bi = new BufferedInputStream(fi);
+			byte[] buffer = new byte[10240];
+			while ((flag = bi.read(buffer)) != -1) {
+				content += new String(buffer, 0, flag);
+			}
+			bi.close();
+			fi.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return content;
+	}
+	public void BufOutput(String s) throws IOException {
+		File f=new File("C:\\Users\\JF\\Desktop\\111.txt");
+		FileOutputStream fo = new FileOutputStream(f);
+		try {
+			BufferedOutputStream bo = new BufferedOutputStream(fo);
+			bo.write(s.getBytes());
+			bo.close();
+			fo.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException ex) {

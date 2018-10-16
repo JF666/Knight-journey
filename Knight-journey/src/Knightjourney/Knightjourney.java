@@ -20,7 +20,7 @@ import javax.swing.JTextField;
 public class Knightjourney extends JFrame implements ActionListener,Runnable
 {
 	private JTextField text[]=new JTextField[4];
-	private JButton Butt[]=new JButton[5];
+	private JButton Butt[]=new JButton[6];
 	private JButton Butt0[][]=new JButton[8][8];
 	private JTextArea jta;
 	int num=0,show=1,size;
@@ -139,9 +139,12 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		Butt[3]=new JButton("动画效果");
 		Butt[3].addActionListener(this);
 		P17.add(Butt[3]);
-		Butt[4]=new JButton("显示结果");
+		Butt[4]=new JButton("字符流");
 		Butt[4].addActionListener(this);
 		P17.add(Butt[4]);
+        Butt[5]=new JButton("字节流");
+        Butt[5].addActionListener(this);
+        P17.add(Butt[5]);
 		F9.add(P17);
 		JPanel F10=new JPanel(new GridLayout(1,1));
 		JPanel P18=new JPanel(new FlowLayout());
@@ -173,18 +176,21 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		Thread t=new Thread(this);
 	}
+	public void Show1(){
+        int z[]=new int[2];
+        z[0]=Integer.parseInt(text[0].getText())-1;
+        z[1]=Integer.parseInt(text[1].getText())-1;
+        size=Integer.parseInt(text[2].getText());
+        start(z);
+        show=2;
+    }
 	public void actionPerformed(ActionEvent massag) {
 		if(massag.getSource() == Butt[0]) {
 			if(text[0].getText().equals("") || text[1].getText().equals("") || text[2].getText().equals(""))
 				text[3].setText("请输入起点和棋盘大小");
 			else {
 				if(show==1) {
-					int z[]=new int[2];
-					z[0]=Integer.parseInt(text[0].getText())-1;
-					z[1]=Integer.parseInt(text[1].getText())-1;
-					size=Integer.parseInt(text[2].getText());
-					start(z);
-					show=2;
+                    Show1();
 				}
 				if(num!=size*size && show==2) {
 					num++;
@@ -203,13 +209,8 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 				text[3].setText("请输入起点和棋盘大小");
 			else {
 				if(show==1) {
-					int z[]=new int[2];
-					z[0]=Integer.parseInt(text[0].getText())-1;
-					z[1]=Integer.parseInt(text[1].getText())-1;
-					size=Integer.parseInt(text[2].getText());
-					start(z);
-					show=2;
-				}
+                    Show1();
+                }
 				if(show==2) {
 					for(int i=0;i<size;i++) {
 						for(int j=0;j<size;j++) {
@@ -243,9 +244,8 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 			if(text[0].getText().equals("") || text[1].getText().equals("") || text[2].getText().equals(""))
 				text[3].setText("请输入起点和棋盘大小");
 			else {
-				String result="";
+				String result;
 				ioFile io=new ioFile();
-				this.jta.setText(result);
 				this.jta.setText("");
 				int[] start=new int[2];
 				start[0]=Integer.parseInt(this.text[0].getText());
@@ -257,7 +257,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 						io.BufWriter(s);
 					}
 					result=io.BufReader();
-					this.jta.setText(result);
+					this.jta.setText("字符流:"+result);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException ex) {
@@ -265,6 +265,31 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 				}
 			}
 		}
+        if(massag.getSource() == Butt[5]) {
+            if(text[0].getText().equals("") || text[1].getText().equals("") || text[2].getText().equals(""))
+                text[3].setText("请输入起点和棋盘大小");
+            else {
+                String result;
+                ioFile io=new ioFile();
+                this.jta.setText("");
+                int[] start=new int[2];
+                start[0]=Integer.parseInt(this.text[0].getText());
+                start[1]=Integer.parseInt(this.text[1].getText());
+                ArrayList<String> a=this.AllPath(start);
+                try {
+                    for(int j=0;j<a.size();j++) {
+                        String s=a.get(j);
+                        io.BufOutput(s);
+                    }
+                    result=io.BufInput();
+                    this.jta.setText("字节流:"+result);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
 	} 
 	public void start(int[] b) {
 		int count=1,direction=1;
@@ -437,13 +462,8 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 			text[3].setText("请输入起点和棋盘大小");
 		else {
 			if(show==1) {
-				int z[]=new int[2];
-				z[0]=Integer.parseInt(text[0].getText())-1;
-				z[1]=Integer.parseInt(text[1].getText())-1;
-				size=Integer.parseInt(text[2].getText());
-				start(z);
-				show=2;
-			}
+                Show1();
+            }
 			while(num!=size*size && show==2) {
 				num++;
 				for(int i=0;i<8;i++) {
