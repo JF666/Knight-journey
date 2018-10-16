@@ -22,7 +22,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 	private JTextField text[]=new JTextField[4];
 	private JButton Butt[]=new JButton[6];
 	private JButton Butt0[][]=new JButton[8][8];
-	private JTextArea jta;
+	private JTextArea jta[]=new JTextArea[2];
 	int num=0,show=1,size;
 	private boolean flag=false;
 	private Thread t;
@@ -30,7 +30,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 	public Knightjourney()
 	{
 		super("骑士游历");
-		this.setSize(900,700);
+		this.setSize(900,680);
 		this.setLocation(400, 150);
 		JPanel F0=new JPanel(new GridLayout(1,9));
 		JPanel P0=new JPanel(new FlowLayout());
@@ -152,11 +152,14 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		P18.add(text[3]=new JTextField(12));
 		text[3].setText("棋盘范围为[5,8]");
 		F10.add(P18);
-		jta=new JTextArea(10,75);
+		jta[0]=new JTextArea(4,75);
 		JPanel jp=new JPanel();
-		JScrollPane js=new JScrollPane(jta);
+		JScrollPane js=new JScrollPane(jta[0]);
 		jp.add(js);
-		jp.setSize(100,100);
+		jta[1]=new JTextArea(4,75);
+		JPanel jp1=new JPanel();
+		JScrollPane js1=new JScrollPane(jta[1]);
+		jp1.add(js1);
 		JPanel F11=new JPanel(new GridLayout(11,1));
 		F11.add(F0);
 		F11.add(F1);
@@ -171,6 +174,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		F11.add(F10);
 		this.add(F11);
 		this.add(jp);
+		this.add(jp1);
 		this.setLayout(new FlowLayout());
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -234,7 +238,8 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 					chessboard[i][j]=0;
 				}
 			}
-			jta.setText("");
+			jta[0].setText("");
+			jta[1].setText("");
 		}
 		if(massag.getSource() == Butt[3]) {
 			t=new Thread(this);
@@ -246,7 +251,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 			else {
 				String result;
 				ioFile io=new ioFile();
-				this.jta.setText("");
+				this.jta[0].setText("");
 				int[] start=new int[2];
 				start[0]=Integer.parseInt(this.text[0].getText());
 				start[1]=Integer.parseInt(this.text[1].getText());
@@ -257,7 +262,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 						io.BufWriter(s);
 					}
 					result=io.BufReader();
-					this.jta.setText("字符流:"+result);
+					this.jta[0].setText("字符流:"+result);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException ex) {
@@ -271,7 +276,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
             else {
                 String result;
                 ioFile io=new ioFile();
-                this.jta.setText("");
+                this.jta[1].setText("");
                 int[] start=new int[2];
                 start[0]=Integer.parseInt(this.text[0].getText());
                 start[1]=Integer.parseInt(this.text[1].getText());
@@ -282,7 +287,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
                         io.BufOutput(s);
                     }
                     result=io.BufInput();
-                    this.jta.setText("字节流:"+result);
+                    this.jta[1].setText("字节流:"+result);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException ex) {
