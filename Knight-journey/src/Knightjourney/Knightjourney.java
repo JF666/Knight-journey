@@ -23,10 +23,10 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 	private JButton Butt[]=new JButton[6];
 	private JButton Butt0[][]=new JButton[8][8];
 	private JTextArea jta[]=new JTextArea[2];
-	int num=0,show=1,size;
-	private boolean flag=false;
+	private int num=0,show=1,size;
 	private Thread t;
-	int chessboard[][] = new int[8][8];
+	private int chessboard[][] = new int[8][8];
+	private int x,y;
 	public Knightjourney()
 	{
 		super("骑士游历");
@@ -178,9 +178,9 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		this.setLayout(new FlowLayout());
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		Thread t=new Thread(this);
+		t=new Thread(this);
 	}
-	public void Show1(){
+	private void Show1(){
         int z[]=new int[2];
         z[0]=Integer.parseInt(text[0].getText())-1;
         z[1]=Integer.parseInt(text[1].getText())-1;
@@ -263,8 +263,6 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 					}
 					result=io.BufReader();
 					this.jta[0].setText("字符流:"+result);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
@@ -288,15 +286,13 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
                     }
                     result=io.BufInput();
                     this.jta[1].setText("字节流:"+result);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         }
 	} 
-	public void start(int[] b) {
+	private void start(int[] b) {
 		int count=1,direction=1;
 		while(count<=size*size && direction != 0) {
 			chessboard[b[0]][b[1]]=count;
@@ -313,7 +309,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 			}
 		}
 	}
-	public int select(int[] p) {
+	private int select(int[] p) {
 		int direction=0;
 		int minroad=8;
 		for(int i=1;i<=8;i++)
@@ -339,41 +335,9 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		}
 		return direction;
 	}
-	public int[] GoAStep1(int[] p,int direction)
-	{
-		int q[] = new int[2];
-		int x,y;
-		x=p[0];
-		y=p[1];
+	private void dirSwitch(int direction){
 		switch(direction)
 		{
-		case 1:x-=2;y++;break;
-		case 2:x--;y+=2;break;
-		case 3:x++;y+=2;break;
-		case 4:x+=2;y++;break;
-		case 5:x+=2;y--;break;
-		case 6:x++;y-=2;break;
-		case 7:x--;y-=2;break;
-		case 8:x-=2;y--;break;
-		}
-		q[0]=x;
-		q[1]=y;
-		return q;
-	}
-	public boolean isValid1(int[] p) {
-		return (p[0]>=0&&p[0]<size&&p[1]>=0&&p[1]<size&&chessboard[p[0]][p[1]]==0);
-	}
-	public boolean isValid2(int[] p) {
-		return (p[0]>=0&&p[0]<size&&p[1]>=0&&p[1]<size);
-	}
-	public int[] GoAStep2(int[] start,Stack s) {	
-		for(int direction=start[2]+1;direction<9;direction++) {
-			int[] q = new int[3];
-			int x,y;
-			x=start[0];
-			y=start[1];
-			switch(direction)
-			{
 			case 1:x-=2;y++;break;
 			case 2:x--;y+=2;break;
 			case 3:x++;y+=2;break;
@@ -382,10 +346,32 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 			case 6:x++;y-=2;break;
 			case 7:x--;y-=2;break;
 			case 8:x-=2;y--;break;
-			}			
+		}
+	}
+	private int[] GoAStep1(int[] p,int direction)
+	{
+		int q[] = new int[2];
+		x=p[0];
+		y=p[1];
+		dirSwitch(direction);
+		q[0]=x;
+		q[1]=y;
+		return q;
+	}
+	private boolean isValid1(int[] p) {
+		return (p[0]>=0&&p[0]<size&&p[1]>=0&&p[1]<size&&chessboard[p[0]][p[1]]==0);
+	}
+	private boolean isValid2(int[] p) {
+		return (p[0]>=0&&p[0]<size&&p[1]>=0&&p[1]<size);
+	}
+	private int[] GoAStep2(int[] start,Stack s) {
+		for(int direction=start[2]+1;direction<9;direction++) {
+			int[] q = new int[3];
+			x=start[0];
+			y=start[1];
+			dirSwitch(direction);
 			q[0]=x;
 			q[1]=y;
-			q[2]=0;			
 			if((!this.IsInStack(q, s))&&this.isValid2(q)) {
 				start[2]=direction;
 				return q;
@@ -393,7 +379,7 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		}
 		return null;
 	}
-	public boolean IsInStack(int[] i,Stack s) {
+	private boolean IsInStack(int[] i,Stack s) {
 		Iterator it=s.iterator();
 		int flag=0;
 		while(it.hasNext()) {
@@ -414,18 +400,17 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		}else{
 			return true;
 		}
-	}	
-	public ArrayList<String> AllPath(int[] s) {
+	}
+	private ArrayList<String> AllPath(int[] s) {
 		size=Integer.parseInt(text[2].getText());
-		ArrayList<String> a=new ArrayList<String>();
-		Stack<int[]>p=new Stack<int[]>();
+		ArrayList<String> a=new ArrayList<>();
+		Stack<int[]>p=new Stack<>();
 		int[] start=new int[3];
 		start[0]=s[0];
 		start[1]=s[1];
-		start[2]=0;
-		p.push(start);		
+		p.push(start);
 		while(!p.isEmpty()) {
-			int[] j=new int[3];	
+			int[] j;
 			j=this.GoAStep2(start,p);
 			if(j!=null) {
 				p.push(j);
@@ -448,19 +433,16 @@ public class Knightjourney extends JFrame implements ActionListener,Runnable
 		}
 		return a;
 	}
-	public String Pathoutput(Stack s) {
+	private String Pathoutput(Stack s) {
 		String str="";
 		for(int j=0;j<size*size;j++) {
 			int[] i=(int[])s.get(j);
-			str+=this.Arrayc(i);		
-			str+="->";
+			str+=this.Arrayc(i)+"->";
 		}
-		str=str.substring(0,str.length()-2);
-		return str;
+		return str.substring(0,str.length()-2);
 	}
-	public String Arrayc(int[] i) {
-		String str="("+i[0]+","+i[1]+")";
-		return str;
+	private String Arrayc(int[] i) {
+		return "("+i[0]+","+i[1]+")";
 	}
 	public void run() {
 		if(text[0].getText().equals("") || text[1].getText().equals("") || text[2].getText().equals(""))

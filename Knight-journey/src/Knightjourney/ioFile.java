@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ioFile {
 	public String BufReader() throws FileNotFoundException {
-		File f=new File("C:\\Users\\JF\\Desktop\\111.txt");
+		File f=new File("C:\\Users\\JF\\Desktop\\1.txt");
 		FileReader fr=new FileReader(f);
 		String str = "";
 		try {
@@ -23,7 +23,7 @@ public class ioFile {
 		return str;
 	}
 	public void BufWriter(String s) throws IOException {
-		File f=new File("C:\\Users\\JF\\Desktop\\111.txt");
+		File f=new File("C:\\Users\\JF\\Desktop\\1.txt");
 		FileWriter fw=new FileWriter(f);
 		try {
 			BufferedWriter bw = new BufferedWriter(fw);
