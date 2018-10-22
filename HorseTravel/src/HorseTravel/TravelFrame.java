@@ -8,12 +8,13 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class TravelFrame extends JFrame implements ActionListener,Runnable {
-	private JButton Butt[]=new JButton[6];
+	private JButton Butt[]=new JButton[2];
 	private JButton Butt0[][];
 	private JTextArea jta[]=new JTextArea[2];
+	private JMenuItem jmi[];
+	private JMenuItem jmi1[];
 	private int size,num;
 	private Travel tvl;
-	private Thread t;
 	TravelFrame(int n,int x,int y) {
 		super("骑士游历");
 		tvl=new Travel(n,x,y);
@@ -21,9 +22,44 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		Butt0=new JButton[n][n];
 		JLabel L3[]=new JLabel[9];
 		this.setSize(650,n*60+350);
-		this.setLocation(450, 50);
+		this.setLocationRelativeTo(null);
+		JMenuBar jmb=new JMenuBar();
+		this.setJMenuBar(jmb);
+		JMenu jm[];
+		String jmstr[]={"文件","开始"};
+		jm=new JMenu[jmstr.length];
+		for(int i=0;i<jmstr.length;i++) {
+			jm[i] = new JMenu(jmstr[i]);
+			jmb.add(jm[i]);
+		}
+		String jmistr[]={"动画演示","|","走完"};
+		jmi=new JMenuItem[jmistr.length];
+		JMenu jm1=new JMenu("流操作");
+		String jmistr1[]={"字符流","|","字节流"};
+		jmi1=new JMenuItem[jmistr1.length];
+		for(int i=0;i<jmistr1.length;i++) {
+			if(jmistr1[i].equals("|")) {
+				jm1.addSeparator();
+			}
+			else {
+				jmi1[i]=new JMenuItem(jmistr1[i]);
+				jm1.add(jmi1[i]);
+				jmi1[i].addActionListener(this);
+			}
+		}
+		jm[0].add(jm1);
+		for(int i=0;i<jmistr.length;i++) {
+			if(jmistr[i].equals("|")) {
+				jm[1].addSeparator();
+			}
+			else {
+				jmi[i]=new JMenuItem(jmistr[i]);
+				jm[1].add(jmi[i]);
+				jmi[i].addActionListener(this);
+			}
+		}
 		JPanel F0=new JPanel(new GridLayout(n+1,n+1));
-		F0.add(new Label(""));
+  		F0.add(new Label(""));
 		for (int i=1;i<n+1;i++) {
 			JLabel L1=new JLabel(i+"");
 			L1.setHorizontalAlignment(SwingConstants.CENTER);
@@ -62,41 +98,26 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		F1.add(L3[7]);
 		L3[8]=new JLabel(tvl.response);
 		F1.add(L3[8]);
-		JPanel F2=new JPanel(new FlowLayout());
 		Butt[0]=new JButton("下一步");
 		Butt[0].addActionListener(this);
-		F2.add(Butt[0]);
-		Butt[1]=new JButton("动画效果");
+		F1.add(Butt[0]);
+		Butt[1]=new JButton("重置");
 		Butt[1].addActionListener(this);
-		F2.add(Butt[1]);
-		Butt[2]=new JButton("走完");
-		Butt[2].addActionListener(this);
-		F2.add(Butt[2]);
-		Butt[3]=new JButton("字符流");
-		Butt[3].addActionListener(this);
-		F2.add(Butt[3]);
-		Butt[4]=new JButton("字节流");
-		Butt[4].addActionListener(this);
-		F2.add(Butt[4]);
-		Butt[5]=new JButton("重置");
-		Butt[5].addActionListener(this);
-		F2.add(Butt[5]);
-		JPanel F3=new JPanel(new GridLayout(2,1));
+		F1.add(Butt[1]);
+		JPanel F2=new JPanel(new GridLayout(2,1));
 		jta[0]=new JTextArea(3,50);
 		JScrollPane js=new JScrollPane(jta[0]);
-		F3.add(js);
+		F2.add(js);
 		jta[1]=new JTextArea(3,50);
 		JScrollPane js1=new JScrollPane(jta[1]);
-		F3.add(js1);
+		F2.add(js1);
 		JPanel F4=new JPanel(new FlowLayout());
 		F4.add(F0);
 		F4.add(F1);
 		F4.add(F2);
-		F4.add(F3);
 		this.add(F4);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		t=new Thread(this);
 	}
 	public void actionPerformed(ActionEvent message) {
 		if (message.getSource() == Butt[0]) {
@@ -111,11 +132,12 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				}
 			}
 		}
-		if (message.getSource() == Butt[1]) {
-			Butt[1].setEnabled(false);
+		if (message.getSource() == jmi[0]) {
+			jmi[0].setEnabled(false);
+			Thread t=new Thread(this);
 			t.start();
 		}
-		if (message.getSource() == Butt[2]) {
+		if (message.getSource() == jmi[2]) {
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					if(tvl.chessboard[i][j]!=0){
@@ -124,8 +146,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				}
 			}
 		}
-		if (message.getSource() == Butt[3]) {
-			Butt[3].setEnabled(false);
+		if (message.getSource() == jmi1[0]) {
+			jmi1[0].setEnabled(false);
 			ioFile io=new ioFile();
 			this.jta[0].setText("");
 			try {
@@ -135,8 +157,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				ex.printStackTrace();
 			}
 		}
-		if (message.getSource() == Butt[4]) {
-			Butt[4].setEnabled(false);
+		if (message.getSource() == jmi1[2]) {
+			jmi1[2].setEnabled(false);
 			ioFile io=new ioFile();
 			this.jta[1].setText("");
 			try {
@@ -146,7 +168,7 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				ex.printStackTrace();
 			}
 		}
-		if (message.getSource() == Butt[5]) {
+		if (message.getSource() == Butt[1]) {
 			this.dispose();
 			new init();
 		}

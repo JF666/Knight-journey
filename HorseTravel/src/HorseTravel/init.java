@@ -13,7 +13,8 @@ public class init  extends JFrame implements ActionListener {
     private JButton but2;
     init(){
         super("请输入棋盘大小和起点");
-        this.setBounds(800,400,350,200);
+        this.setSize(350,200);
+        this.setLocationRelativeTo(null);
         JPanel P=new JPanel(new GridLayout(3,1));
         JPanel P1=new JPanel(new FlowLayout());
         JLabel L1=new JLabel("棋盘大小:");
@@ -48,6 +49,9 @@ public class init  extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent message) {
         if(message.getSource() == but1) {
             if (jt1.getText().equals("") || jt2.getText().equals("") || jt3.getText().equals("")) {
+                jt1.setText("");
+                jt2.setText("");
+                jt3.setText("");
                 JOptionPane.showMessageDialog(null, "请输入数据", "提示", JOptionPane.PLAIN_MESSAGE);
                 throw new IllegalArgumentException("请输入数据");
             }else {
@@ -56,16 +60,25 @@ public class init  extends JFrame implements ActionListener {
                     int x=Integer.parseInt(jt2.getText());
                     int y=Integer.parseInt(jt3.getText());
                     if(n<5||n>8){
+                        jt1.setText("");
+                        jt2.setText("");
+                        jt3.setText("");
                         JOptionPane.showMessageDialog(null,"棋盘尺寸太大或太小","提示",JOptionPane.PLAIN_MESSAGE);
                         throw new IllegalArgumentException("棋盘尺寸太大或太小");
                     }
                     if(x<1||x>n||y<1||y>n){
+                        jt1.setText("");
+                        jt2.setText("");
+                        jt3.setText("");
                         JOptionPane.showMessageDialog(null,"起点不在棋盘内","提示",JOptionPane.PLAIN_MESSAGE);
                         throw new IllegalArgumentException("起点不在棋盘内");
                     }
                     this.dispose();
                     new TravelFrame(n,x,y);
                 }catch(NumberFormatException ne){
+                    jt1.setText("");
+                    jt2.setText("");
+                    jt3.setText("");
                     JOptionPane.showMessageDialog(null,"请输入整数","提示",JOptionPane.PLAIN_MESSAGE);
                     throw new IllegalArgumentException("请输入整数");
                 }
@@ -77,7 +90,7 @@ public class init  extends JFrame implements ActionListener {
             jt3.setText("");
         }
     }
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new init();
     }
 }
