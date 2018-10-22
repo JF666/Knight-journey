@@ -3,6 +3,7 @@ package HorseTravel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -148,8 +149,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		}
 		if (message.getSource() == jmi1[0]) {
 			jmi1[0].setEnabled(false);
-			ioFile io=new ioFile();
 			this.jta[0].setText("");
+			ioFile io=new ioFile();
 			try {
 				io.BufWriter(tvl.result);
 				this.jta[0].setText("×Ö·ûÁ÷:" + io.BufReader());

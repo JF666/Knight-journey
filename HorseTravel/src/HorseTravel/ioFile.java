@@ -1,10 +1,18 @@
 package HorseTravel;
 
+import javax.swing.*;
 import java.io.*;
 
 public class ioFile {
+	String s="";
+	public void getPath() {
+		JFileChooser jfc=new JFileChooser(new File("C:\\Users\\JF\\Desktop"));
+		jfc.showDialog(new JLabel(), "Ñ¡Ôñ");
+		File file=jfc.getSelectedFile();
+		s+=file.getAbsolutePath();
+	}
 	public String BufReader() throws FileNotFoundException {
-		File f=new File("C:\\Users\\JF\\Desktop\\Ch-stream.txt");
+		File f=new File(s);
 		FileReader fr=new FileReader(f);
 		String str = "";
 		try {
@@ -20,12 +28,13 @@ public class ioFile {
 		}
 		return str;
 	}
-	public void BufWriter(String s) throws IOException {
-		File f=new File("C:\\Users\\JF\\Desktop\\Ch-stream.txt");
+	public void BufWriter(String ss) throws IOException {
+		getPath();
+		File f=new File(s);
 		FileWriter fw=new FileWriter(f);
 		try {
 			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(s);
+			bw.write(ss);
 			bw.close();
 			fw.close();
 		} catch (IOException ex) {
@@ -33,7 +42,7 @@ public class ioFile {
 		}
 	}
 	public String BufInput() throws FileNotFoundException {
-		File f=new File("C:\\Users\\JF\\Desktop\\Bt-stream.txt");
+		File f=new File(s);
 		FileInputStream fi = new FileInputStream(f);
 		String content = "";
 		int flag;
@@ -50,12 +59,13 @@ public class ioFile {
 		}
 		return content;
 	}
-	public void BufOutput(String s) throws IOException {
-		File f=new File("C:\\Users\\JF\\Desktop\\Bt-stream.txt");
+	public void BufOutput(String ss) throws IOException {
+		getPath();
+		File f=new File(s);
 		FileOutputStream fo = new FileOutputStream(f);
 		try {
 			BufferedOutputStream bo = new BufferedOutputStream(fo);
-			bo.write(s.getBytes());
+			bo.write(ss.getBytes());
 			bo.close();
 			fo.close();
 		} catch (IOException ex) {
