@@ -110,8 +110,4 @@ class Travel {
         }
         return null;
     }
-//    public static void main(String[] args){
-//        new Travel(5,1,1);
-//    }
 }
-

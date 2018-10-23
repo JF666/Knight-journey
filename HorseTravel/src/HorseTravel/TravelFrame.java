@@ -8,7 +8,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class TravelFrame extends JFrame implements ActionListener,Runnable {
-	private JButton Butt[]=new JButton[2];
+	private JButton Butt[];
 	private JButton Butt0[][];
 	private JTextArea jta[]=new JTextArea[2];
 	private JMenuItem jmi[];
@@ -20,8 +20,7 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		tvl=new Travel(n,x,y);
 		size=n;
 		Butt0=new JButton[n][n];
-		JLabel L3[]=new JLabel[9];
-		this.setSize(650,n*60+350);
+		this.setSize(650,n*60+380);
 		this.setLocationRelativeTo(null);
 		JMenuBar jmb=new JMenuBar();
 		this.setJMenuBar(jmb);
@@ -59,63 +58,50 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 			}
 		}
 		FlowLayout f=new FlowLayout();
-		JPanel F1=new JPanel(f);
-		L3[0]=new JLabel("棋盘大小:");
-		F1.add(L3[0]);
-		L3[1]=new JLabel(n+"");
-		F1.add(L3[1]);
-		JLabel L4=new JLabel("        ");
-		F1.add(L4);
-		L3[2]=new JLabel("起点:(");
-		F1.add(L3[2]);
-		L3[3]=new JLabel(x+"");
-		F1.add(L3[3]);
-		L3[4]=new JLabel(",");
-		F1.add(L3[4]);
-		L3[5]=new JLabel(y+"");
-		F1.add(L3[5]);
-		L3[6]=new JLabel(")");
-		F1.add(L3[6]);
-		JLabel L5=new JLabel("        ");
-		F1.add(L5);
-		L3[7]=new JLabel("提示:");
-		F1.add(L3[7]);
-		L3[8]=new JLabel(tvl.response);
-		F1.add(L3[8]);
-		Butt[0]=new JButton("下一步");
-		Butt[0].addActionListener(this);
-		F1.add(Butt[0]);
-		Butt[1]=new JButton("重置");
-		Butt[1].addActionListener(this);
-		F1.add(Butt[1]);
-		f.setVgap(10);
-		JPanel F0=new JPanel(new GridLayout(n+1,n+1));
-  		F0.add(new Label(""));
+		f.setVgap(15);
+		JPanel F0=new JPanel(f);
+		JLabel jlb[];
+		String jlbstr[]={"棋盘大小:",n+"","    ","起点:(",x+"",",",y+"",")","    ","提示:",tvl.response};
+		jlb=new JLabel[jlbstr.length];
+		for (int i=0;i<jlbstr.length;i++){
+			jlb[i]=new JLabel(jlbstr[i]);
+			F0.add(jlb[i]);
+		}
+		String Buttstr[]={"下一步","重置"};
+		Butt=new JButton[Buttstr.length];
+		for (int i=0;i<Buttstr.length;i++){
+			Butt[i]=new JButton(Buttstr[i]);
+			Butt[i].addActionListener(this);
+			F0.add(Butt[i]);
+		}
+		JPanel F1=new JPanel(new GridLayout(n+1,n+1));
+  		F1.add(new Label(""));
 		for (int i=1;i<n+1;i++) {
 			JLabel L1=new JLabel(i+"");
 			L1.setHorizontalAlignment(SwingConstants.CENTER);
-			F0.add(L1);
+			F1.add(L1);
 		}
 		for(int i=0;i<n;i++) {
 			JLabel L2=new JLabel(i+1+"");
 			L2.setHorizontalAlignment(SwingConstants.CENTER);
-			F0.add(L2);
+			F1.add(L2);
 			for(int j=0;j<n;j++) {
 				Butt0[i][j]=new JButton("");
 				Butt0[i][j].setPreferredSize(new Dimension(60,60));
-				F0.add(Butt0[i][j]);
+				F1.add(Butt0[i][j]);
 			}
 		}
 		JPanel F2=new JPanel(new GridLayout(2,1));
-		jta[0]=new JTextArea(3,50);
-		JScrollPane js=new JScrollPane(jta[0]);
-		F2.add(js);
-		jta[1]=new JTextArea(3,50);
-		JScrollPane js1=new JScrollPane(jta[1]);
-		F2.add(js1);
+		JScrollPane js[];
+		js=new JScrollPane[jta.length];
+		for (int i=0;i<jta.length;i++){
+			jta[i]=new JTextArea(3,75);
+			js[i]=new JScrollPane(jta[i]);
+			F2.add(js[i]);
+		}
 		JPanel F3=new JPanel(new FlowLayout());
-		F3.add(F1);
 		F3.add(F0);
+		F3.add(F1);
 		F3.add(F2);
 		this.add(F3);
 		this.setVisible(true);
@@ -128,6 +114,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				for (int i = 0; i < size; i++) {
 					for (int j = 0; j < size; j++) {
 						if(tvl.chessboard[i][j]==num){
+							Font font=new Font("宋体",Font.BOLD,14);
+							Butt0[i][j].setFont(font);
 							Butt0[i][j].setText(Integer.toString(num));
 						}
 					}
@@ -144,28 +132,32 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					if(tvl.chessboard[i][j]!=0){
+						Font font=new Font("宋体",Font.BOLD,14);
+						Butt0[i][j].setFont(font);
 						Butt0[i][j].setText(Integer.toString(tvl.chessboard[i][j]));
 					}
 				}
 			}
 		}
 		if (message.getSource() == jmi1[0]) {
-			jmi1[0].setEnabled(false);
 			this.jta[0].setText("");
 			ioFile io=new ioFile();
 			try {
 				io.BufWriter(tvl.result);
+				Font font=new Font("宋体",Font.BOLD,14);
+				jta[0].setFont(font);
 				this.jta[0].setText("字符流:" + io.BufReader());
 			}catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
 		if (message.getSource() == jmi1[2]) {
-			jmi1[2].setEnabled(false);
 			ioFile io=new ioFile();
 			this.jta[1].setText("");
 			try {
 				io.BufOutput(tvl.result);
+				Font font=new Font("宋体",Font.BOLD,14);
+				jta[1].setFont(font);
 				this.jta[1].setText("字节流:"+io.BufInput());
 			} catch (IOException ex) {
 				ex.printStackTrace();
@@ -182,6 +174,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					if (tvl.chessboard[i][j] == num) {
+						Font font=new Font("楷体",Font.BOLD,14);
+						Butt0[i][j].setFont(font);
 						Butt0[i][j].setText(Integer.toString(num));
 					}
 				}
