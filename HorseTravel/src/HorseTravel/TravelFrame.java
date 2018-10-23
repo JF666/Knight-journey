@@ -3,7 +3,6 @@ package HorseTravel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -59,24 +58,8 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 				jmi[i].addActionListener(this);
 			}
 		}
-		JPanel F0=new JPanel(new GridLayout(n+1,n+1));
-  		F0.add(new Label(""));
-		for (int i=1;i<n+1;i++) {
-			JLabel L1=new JLabel(i+"");
-			L1.setHorizontalAlignment(SwingConstants.CENTER);
-			F0.add(L1);
-		}
-		for(int i=0;i<n;i++) {
-			JLabel L2=new JLabel(i+1+"");
-			L2.setHorizontalAlignment(SwingConstants.CENTER);
-			F0.add(L2);
-			for(int j=0;j<n;j++) {
-				Butt0[i][j]=new JButton("");
-				Butt0[i][j].setPreferredSize(new Dimension(60,60));
-				F0.add(Butt0[i][j]);
-			}
-		}
-		JPanel F1=new JPanel(new FlowLayout());
+		FlowLayout f=new FlowLayout();
+		JPanel F1=new JPanel(f);
 		L3[0]=new JLabel("ÆåÅÌ´óÐ¡:");
 		F1.add(L3[0]);
 		L3[1]=new JLabel(n+"");
@@ -105,6 +88,24 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		Butt[1]=new JButton("ÖØÖÃ");
 		Butt[1].addActionListener(this);
 		F1.add(Butt[1]);
+		f.setVgap(10);
+		JPanel F0=new JPanel(new GridLayout(n+1,n+1));
+  		F0.add(new Label(""));
+		for (int i=1;i<n+1;i++) {
+			JLabel L1=new JLabel(i+"");
+			L1.setHorizontalAlignment(SwingConstants.CENTER);
+			F0.add(L1);
+		}
+		for(int i=0;i<n;i++) {
+			JLabel L2=new JLabel(i+1+"");
+			L2.setHorizontalAlignment(SwingConstants.CENTER);
+			F0.add(L2);
+			for(int j=0;j<n;j++) {
+				Butt0[i][j]=new JButton("");
+				Butt0[i][j].setPreferredSize(new Dimension(60,60));
+				F0.add(Butt0[i][j]);
+			}
+		}
 		JPanel F2=new JPanel(new GridLayout(2,1));
 		jta[0]=new JTextArea(3,50);
 		JScrollPane js=new JScrollPane(jta[0]);
@@ -112,11 +113,11 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		jta[1]=new JTextArea(3,50);
 		JScrollPane js1=new JScrollPane(jta[1]);
 		F2.add(js1);
-		JPanel F4=new JPanel(new FlowLayout());
-		F4.add(F0);
-		F4.add(F1);
-		F4.add(F2);
-		this.add(F4);
+		JPanel F3=new JPanel(new FlowLayout());
+		F3.add(F1);
+		F3.add(F0);
+		F3.add(F2);
+		this.add(F3);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
@@ -139,6 +140,7 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 			t.start();
 		}
 		if (message.getSource() == jmi[2]) {
+			jmi[2].setEnabled(false);
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					if(tvl.chessboard[i][j]!=0){
