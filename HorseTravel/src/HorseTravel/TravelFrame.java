@@ -154,11 +154,28 @@ public class TravelFrame extends JFrame implements ActionListener,Runnable {
 		if (message.getSource() == jmi1[2]) {
 			ioFile io=new ioFile();
 			this.jta[1].setText("");
+			int[] rex=new int[size*size];
+			int[] rey=new int[size*size];
+			String re="";
 			try {
-				io.BufOutput(tvl.result);
+				io.getPath();
+				for(int i=0;i<size*size;i++) {
+					io.BufOutput(tvl.xx[i]);
+					rex[i]=io.BufInput();
+				}
+				for(int i=0;i<size*size;i++) {
+					io.BufOutput(tvl.yy[i]);
+					rey[i] = io.BufInput();
+				}
+				for(int i=0;i<size*size;i++) {
+					if(rex[i]!=0&&rey[i]!=0) {
+						re += "(" + rex[i] + "," + rey[i] + ")" + "->";
+					}
+				}
+				re=re.substring(0,re.length()-2);
 				Font font=new Font("宋体",Font.BOLD,14);
 				jta[1].setFont(font);
-				this.jta[1].setText("字节流:"+io.BufInput());
+				this.jta[1].setText("字符流:"+re);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}

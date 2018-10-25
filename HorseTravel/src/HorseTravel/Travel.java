@@ -4,11 +4,11 @@ class Travel {
     int chessboard[][];
     String result="";
     String response="";
+    int[] xx,yy;
     Travel(int n,int x,int y) {
-        if(n<5||n>8){
-            throw new IllegalArgumentException("棋盘尺寸太大或太小");
-        }
         this.chessboard=new int[n][n];
+        xx=new int[n*n];
+        yy=new int[n*n];
         this.start(x-1,y-1);
         result=result.substring(0,result.length()-2);
     }
@@ -20,9 +20,6 @@ class Travel {
                 this.x=x;
                 this.y=y;
             }
-            else{
-                throw new IndexOutOfBoundsException("起点不在棋盘内");
-            }
         }
         public String toString(){
             return "("+(this.x+1)+","+(this.y+1)+")";
@@ -33,6 +30,8 @@ class Travel {
         int count=1,direction=1;
         int n=this.chessboard.length;
         while (count<=n*n&&direction!=0){
+            xx[count-1]=p.x+1;
+            yy[count-1]=p.y+1;
             this.chessboard[p.x][p.y]=count;
             result+=p.toString()+"->";
             direction=this.select(p);

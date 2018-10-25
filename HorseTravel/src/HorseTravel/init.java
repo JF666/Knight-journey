@@ -46,14 +46,18 @@ public class init  extends JFrame implements ActionListener {
     }
     public void actionPerformed(ActionEvent message) {
         if(message.getSource() == but[0]) {
-            for(int i=0;i<jt.length;i++) {
-                if (jt[i].getText().equals("")) {
-                    for (int j = 0; j < jt.length; j++) {
-                        jt[j].setText("");
+            try{
+                for(int i=0;i<jt.length;i++) {
+                    if (jt[i].getText().equals("")) {
+                        for (int j = 0; j < jt.length; j++) {
+                            jt[j].setText("");
+                        }
+                        JOptionPane.showMessageDialog(null, "请输入数据", "提示", JOptionPane.PLAIN_MESSAGE);
+                        return;
                     }
-                    JOptionPane.showMessageDialog(null, "请输入数据", "提示", JOptionPane.PLAIN_MESSAGE);
-                    throw new IllegalArgumentException("请输入数据");
                 }
+            }catch (IllegalArgumentException ile){
+                ile.printStackTrace();
             }
             try{
                 int n[]=new int[3];
@@ -61,18 +65,26 @@ public class init  extends JFrame implements ActionListener {
                     n[j]=Integer.parseInt(jt[j].getText());
                 }
                 if(n[0]<5||n[0]>8){
-                    for(int j=0;j<jt.length;j++) {
-                        jt[j].setText("");
+                    try{
+                        for(int j=0;j<jt.length;j++) {
+                            jt[j].setText("");
+                        }
+                        JOptionPane.showMessageDialog(null,"棋盘尺寸太大或太小","提示",JOptionPane.PLAIN_MESSAGE);
+                        return;
+                    }catch (IllegalArgumentException ie){
+                        ie.printStackTrace();
                     }
-                    JOptionPane.showMessageDialog(null,"棋盘尺寸太大或太小","提示",JOptionPane.PLAIN_MESSAGE);
-                    throw new IllegalArgumentException("棋盘尺寸太大或太小");
                 }
                 if(n[1]<1||n[1]>n[0]||n[2]<1||n[2]>n[0]){
-                    for(int j=0;j<jt.length;j++) {
-                        jt[j].setText("");
+                    try{
+                        for(int j=0;j<jt.length;j++) {
+                            jt[j].setText("");
+                        }
+                        JOptionPane.showMessageDialog(null,"起点不在棋盘内","提示",JOptionPane.PLAIN_MESSAGE);
+                        return;
+                    }catch (IllegalArgumentException iae){
+                        iae.printStackTrace();
                     }
-                    JOptionPane.showMessageDialog(null,"起点不在棋盘内","提示",JOptionPane.PLAIN_MESSAGE);
-                    throw new IllegalArgumentException("起点不在棋盘内");
                 }
                 this.dispose();
                 new TravelFrame(n[0],n[1],n[2]);
@@ -81,7 +93,6 @@ public class init  extends JFrame implements ActionListener {
                     jt[j].setText("");
                 }
                 JOptionPane.showMessageDialog(null,"请输入整数","提示",JOptionPane.PLAIN_MESSAGE);
-                throw new IllegalArgumentException("请输入整数");
             }
         }
         if(message.getSource() == but[1]) {

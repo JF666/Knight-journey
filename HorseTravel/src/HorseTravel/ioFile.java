@@ -5,13 +5,17 @@ import java.io.*;
 
 class ioFile {
 	private String s="";
-	private void getPath() {
+	void getPath() {
 		JFileChooser jfc=new JFileChooser(new File("C:\\Users\\JF\\Desktop"));
 		jfc.showDialog(new JLabel(), "Ñ¡Ôñ");
 		File file=jfc.getSelectedFile();
-		s+=file.getAbsolutePath();
+		try{
+			s+=file.getAbsolutePath();
+		}catch (NullPointerException npe){
+			npe.printStackTrace();
+		}
 	}
-	String BufReader() throws FileNotFoundException {
+	String BufReader() throws IOException {
 		File f=new File(s);
 		FileReader fr=new FileReader(f);
 		String str = "";
@@ -41,32 +45,27 @@ class ioFile {
 			ex.printStackTrace();
 		}
 	}
-	String BufInput() throws FileNotFoundException {
+	int BufInput() throws IOException {
 		File f=new File(s);
 		FileInputStream fi = new FileInputStream(f);
-		String content = "";
-		int flag;
+		int content=0;
 		try {
-			BufferedInputStream bi = new BufferedInputStream(fi);
-			byte[] buffer = new byte[10240];
-			while ((flag = bi.read(buffer)) != -1) {
-				content += new String(buffer, 0, flag);
-			}
-			bi.close();
+			DataInputStream di=new DataInputStream(fi);
+			content = di.readInt();
+			di.close();
 			fi.close();
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		}catch (EOFException ee){
+			ee.printStackTrace();
 		}
 		return content;
 	}
-	void BufOutput(String ss) throws IOException {
-		getPath();
+	void BufOutput(int a) throws IOException {
 		File f=new File(s);
 		FileOutputStream fo = new FileOutputStream(f);
 		try {
-			BufferedOutputStream bo = new BufferedOutputStream(fo);
-			bo.write(ss.getBytes());
-			bo.close();
+			DataOutputStream dos = new DataOutputStream(fo);
+			dos.writeInt(a);
+			dos.close();
 			fo.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
